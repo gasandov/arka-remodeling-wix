@@ -1,0 +1,22 @@
+name: Sync Google reviews to Wix
+
+on:
+  schedule:
+    - cron: "17 14 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Copy Google reviews into the Wix Reviews collection
+        run: node scripts/sync-reviews.mjs
+        env:
+          WIX_API_KEY: ${{ secrets.WIX_API_KEY }}
